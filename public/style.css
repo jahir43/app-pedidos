@@ -1,0 +1,258 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 🎨 VARIABLES (más fácil de mantener) */
+:root {
+    --primary: #007bff;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ff9800;
+    --bg-glass: rgba(255,255,255,0.95);
+    --shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* BODY */
+body {
+    font-family: system-ui, -apple-system, Arial;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url("https://i.etsystatic.com/30286277/r/il/d67eb5/3430055109/il_1588xN.3430055109_pgbd.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* CONTENEDOR */
+.container {
+    background: var(--bg-glass);
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(8px);
+}
+
+/* TITULO */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* PANEL */
+.panel {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    transition: 0.2s;
+}
+
+.panel:hover {
+    transform: translateY(-3px);
+}
+
+/* INPUTS */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 5px rgba(0,123,255,0.3);
+}
+
+/* CANTIDAD */
+.cantidad-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    gap: 10px;
+}
+
+.cantidad-box button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cantidad-box button:hover {
+    transform: scale(1.1);
+}
+
+.cantidad-box span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* BOTÓN PRINCIPAL */
+button.agregar {
+    width: 100%;
+    padding: 12px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+button.agregar:hover {
+    background: #218838;
+}
+
+/* LISTA */
+ul {
+    list-style: none;
+    margin-top: 15px;
+}
+
+li {
+    background: #f8f8f8;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+li:hover {
+    transform: scale(1.02);
+}
+
+/* BOTÓN ELIMINAR */
+li button {
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+li button:hover {
+    background: #c82333;
+}
+
+/* TOTAL */
+#total {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* 🔥 SLIDER PRO */
+.slider-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.4s ease;
+}
+
+.slide {
+    min-width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.slide img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.slide h3 {
+    margin: 10px 0 5px;
+}
+
+.slide p {
+    font-weight: bold;
+}
+
+/* BOTÓN SLIDE */
+.slide button {
+    margin-top: 8px;
+    background: var(--warning);
+    border: none;
+    padding: 8px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.slide button:hover {
+    background: #e68900;
+}
+
+/* BOTONES LATERALES */
+.prev, .next {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    font-size: 22px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.prev:hover, .next:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .slide img {
+        height: 180px;
+    }
+}
