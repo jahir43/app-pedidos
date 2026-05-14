@@ -1,135 +1,361 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>App Pedidos - Fast Food</title>
+
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
 <div class="container">
+
     <h1>🍔 Sistema de Pedidos</h1>
 
-    <!-- 1. SECCIÓN DE SELECCIÓN (SLIDER) -->
+    <!-- SLIDER -->
     <div class="slider-container">
-        <button class="prev" onclick="moverSlide(-1)">❮</button>
+
+        <button
+            type="button"
+            class="prev"
+            onclick="moverSlide(-1)">
+
+            ❮
+
+        </button>
 
         <div class="slider" id="slider">
 
             <!-- HAMBURGUESA -->
             <div class="slide">
+
                 <img src="https://www.recetasnestle.com.ec/sites/default/files/srh_recipes/4e4293857c03d819e4ae51de1e86d66a.jpg">
+
                 <h3>Hamburguesa</h3>
+
                 <p>$20.000</p>
 
                 <div class="control-cantidad">
-                    <button onclick="cambiarCantidadSlider(this, -1)">➖</button>
+
+                    <button
+                        type="button"
+                        onclick="cambiarCantidadSlider(this, -1)">
+
+                        ➖
+
+                    </button>
+
                     <span class="cantidad">1</span>
-                    <button onclick="cambiarCantidadSlider(this, 1)">➕</button>
+
+                    <button
+                        type="button"
+                        onclick="cambiarCantidadSlider(this, 1)">
+
+                        ➕
+
+                    </button>
+
                 </div>
 
-                <button class="btn-add-slider"
-                    onclick="agregarDesdeSlider(this, 'Hamburguesa', 20000)">
+                <!-- 🔥 BOTÓN NUEVO -->
+                <button
+                    type="button"
+                    class="btn-add-slider"
+                    data-producto="Hamburguesa"
+                    data-precio="20000">
+
                     Añadir
+
                 </button>
+
             </div>
 
             <!-- EMPANADA -->
             <div class="slide">
+
                 <img src="https://comidasparaguayas.com/assets/images/empanada-de-carne_800x534.webp">
+
                 <h3>Empanada</h3>
+
                 <p>$6.000</p>
 
                 <div class="control-cantidad">
-                    <button onclick="cambiarCantidadSlider(this, -1)">➖</button>
+
+                    <button
+                        type="button"
+                        onclick="cambiarCantidadSlider(this, -1)">
+
+                        ➖
+
+                    </button>
+
                     <span class="cantidad">1</span>
-                    <button onclick="cambiarCantidadSlider(this, 1)">➕</button>
+
+                    <button
+                        type="button"
+                        onclick="cambiarCantidadSlider(this, 1)">
+
+                        ➕
+
+                    </button>
+
                 </div>
 
-                <button class="btn-add-slider"
-                    onclick="agregarDesdeSlider(this, 'Empanada', 6000)">
+                <!-- 🔥 BOTÓN NUEVO -->
+                <button
+                    type="button"
+                    class="btn-add-slider"
+                    data-producto="Empanada"
+                    data-precio="6000">
+
                     Añadir
+
                 </button>
+
             </div>
 
-            <!-- PERRO CALIENTE -->
+            <!-- PERRO -->
             <div class="slide">
+
                 <img src="https://comedera.com/wp-content/uploads/sites/9/2022/03/Pan-de-perro-caliente-shutterstock_1472131574.jpg">
+
                 <h3>Perro Caliente</h3>
+
                 <p>$8.000</p>
 
                 <div class="control-cantidad">
-                    <button onclick="cambiarCantidadSlider(this, -1)">➖</button>
+
+                    <button
+                        type="button"
+                        onclick="cambiarCantidadSlider(this, -1)">
+
+                        ➖
+
+                    </button>
+
                     <span class="cantidad">1</span>
-                    <button onclick="cambiarCantidadSlider(this, 1)">➕</button>
+
+                    <button
+                        type="button"
+                        onclick="cambiarCantidadSlider(this, 1)">
+
+                        ➕
+
+                    </button>
+
                 </div>
 
-                <button class="btn-add-slider"
-                    onclick="agregarDesdeSlider(this, 'Perro caliente', 8000)">
+                <!-- 🔥 BOTÓN NUEVO -->
+                <button
+                    type="button"
+                    class="btn-add-slider"
+                    data-producto="Perro caliente"
+                    data-precio="8000">
+
                     Añadir
+
                 </button>
+
             </div>
 
         </div>
 
-        <button class="next" onclick="moverSlide(1)">❯</button>
+        <button
+            type="button"
+            class="next"
+            onclick="moverSlide(1)">
+
+            ❯
+
+        </button>
+
     </div>
 
+    <!-- GRID -->
     <div class="grid">
-        <!-- 2. CARRITO / PEDIDO ACTUAL -->
+
+        <!-- CARRITO -->
         <div class="panel">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                ">
+
                 <h3>🛒 Cuenta Actual</h3>
-                <button onclick="toggleManual()" style="background:#6c757d; font-size: 12px; padding: 5px 10px;">
+
+                <button
+                    type="button"
+                    onclick="toggleManual()"
+                    style="
+                        background:#6c757d;
+                        font-size:12px;
+                        padding:5px 10px;
+                    ">
+
                     + Producto Manual
+
                 </button>
+
             </div>
-            
+
             <ul id="lista" class="lista-pedidos"></ul>
-            
+
             <div class="total-section">
-                <h2 id="total">Total: $0</h2>
-                <button id="btn-finalizar" class="btn-finalizar" onclick="finalizarPedido()">
+
+                <h2 id="total">
+                    Total: $0
+                </h2>
+
+                <button
+                    type="button"
+                    id="btn-finalizar"
+                    class="btn-finalizar">
+
                     ✅ FINALIZAR Y COBRAR
+
                 </button>
+
             </div>
+
         </div>
 
-        <!-- 3. FORMULARIO MANUAL -->
-        <div class="panel" id="panel-manual" style="display: none;">
-            <h3 id="form-title">Producto Personalizado</h3>
-            <input type="hidden" id="pedido-id">
-            <input type="text" id="producto" placeholder="Nombre (Ej: Cerveza)">
-            <input type="number" id="precio" placeholder="Precio">
-            
+        <!-- FORMULARIO -->
+        <div
+            class="panel"
+            id="panel-manual"
+            style="display:none;">
+
+            <h3>Producto Personalizado</h3>
+
+            <input
+                type="hidden"
+                id="pedido-id">
+
+            <input
+                type="text"
+                id="producto"
+                placeholder="Nombre">
+
+            <input
+                type="number"
+                id="precio"
+                placeholder="Precio">
+
             <div class="precios-rapidos">
-                <button class="btn-fast" onclick="fijarPrecio(5000)">$5k</button>
-                <button class="btn-fast" onclick="fijarPrecio(10000)">$10k</button>
-                <button class="btn-fast" onclick="fijarPrecio(15000)">$15k</button>
+
+                <button
+                    type="button"
+                    class="btn-fast"
+                    onclick="fijarPrecio(5000)">
+
+                    $5k
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-fast"
+                    onclick="fijarPrecio(10000)">
+
+                    $10k
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-fast"
+                    onclick="fijarPrecio(15000)">
+
+                    $15k
+
+                </button>
+
             </div>
 
             <div class="cantidad-box">
-                <button onclick="cambiarCantidad(-1)">➖</button>
+
+                <button
+                    type="button"
+                    onclick="cambiarCantidad(-1)">
+
+                    ➖
+
+                </button>
+
                 <span id="cantidad">1</span>
-                <button onclick="cambiarCantidad(1)">➕</button>
+
+                <button
+                    type="button"
+                    onclick="cambiarCantidad(1)">
+
+                    ➕
+
+                </button>
+
             </div>
 
-            <button id="btn-agregar" class="agregar" onclick="agregar()">Añadir al pedido</button>
-            <button onclick="toggleManual()" style="background:none; color:gray; margin-top:10px; border:none; cursor:pointer;">
-                Cerrar
+            <button
+                type="button"
+                id="btn-agregar"
+                class="agregar">
+
+                Añadir al pedido
+
             </button>
+
+            <button
+                type="button"
+                onclick="toggleManual()"
+                style="
+                    background:none;
+                    color:gray;
+                    margin-top:10px;
+                    border:none;
+                    cursor:pointer;
+                ">
+
+                Cerrar
+
+            </button>
+
         </div>
+
     </div>
 
-    <!-- 4. DASHBOARD -->
+    <!-- DASHBOARD -->
     <div class="dashboard-resumen">
-        <div class="stat">Ventas del día: <span id="totalVentas">$0</span></div>
-        <div class="stat">Top: <span id="masVendido">-</span></div>
+
+        <div class="stat">
+
+            Ventas del día:
+            <span id="totalVentas">$0</span>
+
+        </div>
+
+        <div class="stat">
+
+            Top:
+            <span id="masVendido">-</span>
+
+        </div>
+
     </div>
 
 </div>
 
-<script src="script.js"></script>
+<!-- 🔥 IMPORTANTE -->
+<script src="script.js?v=10"></script>
+
 </body>
 </html>
