@@ -6,15 +6,17 @@ const path = require("path");
 const app = express();
 
 // --- MIDDLEWARES ---
-// Configuración de CORS optimizada para dispositivos móviles
+// Configuración de CORS optimizada para dispositivos Safari y Android
 app.use(cors({
   origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
+  // Se agrega 'Accept' para evitar bloqueos de seguridad en iOS
+  allowedHeaders: ['Content-Type', 'Accept'] 
 }));
+
 app.use(express.json());
 
-// SERVIR FRONTEND
+// SERVIR FRONTEND (Asegúrate de que la carpeta se llame 'public')
 app.use(express.static(path.join(__dirname, "../public")));
 
 // --- CONFIGURACIÓN DE BASE DE DATOS ---
@@ -52,7 +54,7 @@ app.get("/pedidos", (req, res) => {
   });
 });
 
-// 2. CREAR PEDIDO (Corregido y Unificado)
+// 2. CREAR PEDIDO
 app.post("/pedido", (req, res) => {
   console.log("Cuerpo recibido desde el dispositivo:", req.body);
 
