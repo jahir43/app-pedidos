@@ -4,7 +4,7 @@
     padding: 0;
 }
 
-/* 🎨 VARIABLES (más fácil de mantener) */
+/* 🎨 VARIABLES */
 :root {
     --primary: #007bff;
     --success: #28a745;
@@ -23,7 +23,6 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-
     display: flex;
     justify-content: center;
     padding: 20px;
@@ -40,7 +39,6 @@ body {
     backdrop-filter: blur(8px);
 }
 
-/* TITULO */
 h1 {
     text-align: center;
     margin-bottom: 20px;
@@ -54,17 +52,12 @@ h1 {
     gap: 20px;
 }
 
-/* PANEL */
 .panel {
     background: white;
     padding: 20px;
     border-radius: 15px;
     box-shadow: var(--shadow);
     transition: 0.2s;
-}
-
-.panel:hover {
-    transform: translateY(-3px);
 }
 
 /* INPUTS */
@@ -74,112 +67,79 @@ input {
     margin: 6px 0;
     border-radius: 8px;
     border: 1px solid #ddd;
-    transition: 0.2s;
 }
 
 input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 5px rgba(0,123,255,0.3);
 }
 
-/* CANTIDAD */
-.cantidad-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-    gap: 10px;
-}
-
-.cantidad-box button {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.cantidad-box button:hover {
-    transform: scale(1.1);
-}
-
-.cantidad-box span {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* BOTÓN PRINCIPAL */
-button.agregar {
-    width: 100%;
-    padding: 12px;
-    background: var(--success);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.2s;
-}
-
-button.agregar:hover {
-    background: #218838;
-}
-
-/* LISTA */
-ul {
+/* 🛒 LISTA PEDIDOS */
+.lista-pedidos {
     list-style: none;
     margin-top: 15px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
-li {
-    background: #f8f8f8;
+.item-carrito {
+    background: #f8f9fa;
     padding: 12px;
     border-radius: 10px;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: 0.2s;
+    border-left: 4px solid var(--primary);
 }
 
-li:hover {
-    transform: scale(1.02);
-}
-
-/* BOTÓN ELIMINAR */
-li button {
+.btn-delete {
     background: var(--danger);
     color: white;
     border: none;
-    border-radius: 6px;
-    padding: 6px 10px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
-    transition: 0.2s;
-}
-
-li button:hover {
-    background: #c82333;
-}
-
-/* TOTAL */
-#total {
-    text-align: center;
-    margin-top: 15px;
     font-weight: bold;
-    font-size: 18px;
 }
 
-/* 🔥 SLIDER PRO */
+/* 💰 TOTAL */
+.total-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px dashed #ddd;
+    text-align: center;
+}
+
+.btn-finalizar {
+    width: 100%;
+    padding: 15px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    transition: 0.3s;
+}
+
+.btn-finalizar:hover {
+    background: #218838;
+    transform: scale(1.02);
+}
+
+/* 🔥 SLIDER */
 .slider-container {
     position: relative;
     overflow: hidden;
     border-radius: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    background: white;
+    box-shadow: var(--shadow);
 }
 
 .slider {
@@ -189,62 +149,105 @@ li button:hover {
 
 .slide {
     min-width: 100%;
+    padding: 20px;
     text-align: center;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .slide img {
     width: 100%;
-    height: 230px;
+    height: 250px;
     object-fit: cover;
     border-radius: 15px;
 }
 
-.slide h3 {
-    margin: 10px 0 5px;
+/* 🔢 CONTROL DE CANTIDAD (NUEVO) */
+.control-cantidad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
 }
 
-.slide p {
-    font-weight: bold;
-}
-
-/* BOTÓN SLIDE */
-.slide button {
-    margin-top: 8px;
-    background: var(--warning);
+.control-cantidad button {
+    background: #f1f1f1;
     border: none;
-    padding: 8px;
-    color: white;
+    padding: 6px 12px;
+    font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
 }
 
-.slide button:hover {
+.control-cantidad button:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.control-cantidad span {
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* 🔥 BOTÓN AÑADIR */
+.btn-add-slider {
+    margin-top: 10px;
+    background: var(--warning);
+    border: none;
+    padding: 10px 25px;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.btn-add-slider:hover {
+    transform: scale(1.05);
     background: #e68900;
 }
 
-/* BOTONES LATERALES */
-.prev, .next {
-    position: absolute;
-    top: 45%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border: none;
-    font-size: 22px;
-    padding: 10px;
+/* PRECIOS RÁPIDOS */
+.btn-fast {
+    flex: 1;
+    padding: 8px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     cursor: pointer;
-    border-radius: 8px;
-    transition: 0.2s;
+    font-weight: bold;
 }
 
-.prev:hover, .next:hover {
-    background: rgba(0,0,0,0.8);
+.btn-fast:hover {
+    background: var(--primary);
+    color: white;
 }
 
-.prev { left: 10px; }
-.next { right: 10px; }
+/* 📊 DASHBOARD */
+.dashboard-resumen {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255,255,255,0.8);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.stat {
+    font-weight: bold;
+    color: #444;
+}
+
+.stat span {
+    color: var(--success);
+}
 
 /* 📱 RESPONSIVE */
 @media (max-width: 768px) {
@@ -253,6 +256,6 @@ li button:hover {
     }
 
     .slide img {
-        height: 180px;
+        height: 200px;
     }
 }
