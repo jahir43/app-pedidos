@@ -4,27 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Pedidos - Fast Food</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        html, body { background-color: #f4f7f6; margin: 0; padding: 0; }
+    </style>
+    <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
 
 <div class="container">
     <h1>🍔 Sistema de Pedidos</h1>
 
+    <div class="panel">
+        <h3>🍱 Catálogo de Productos</h3>
+        <div class="catalogo-grid">
+            <div class="producto-card" onclick="seleccionarProducto('Empanada', 6000)">
+                <img src="empanada1.jpg" alt="Empanada">
+                <p>Empanada<br><strong>$6.000</strong></p>
+            </div>
+            <div class="producto-card" onclick="seleccionarProducto('Perro Caliente', 8000)">
+                <img src="hotdog.png" alt="Perro">
+                <p>Perro<br><strong>$8.000</strong></p>
+            </div>
+            <div class="producto-card" onclick="seleccionarProducto('Hamburguesa', 20000)">
+                <img src="hamburguesa.png" alt="Hamburguesa">
+                <p>Burguer<br><strong>$20.000</strong></p>
+            </div>
+            </div>
+    </div>
+
     <div class="grid">
-        <!-- FORMULARIO DE AGREGADO (Ahora es la sección principal) -->
         <div class="panel" id="panel-manual">
-            <h3>➕ Agregar Producto</h3>
+            <h3>➕ Detalle del Pedido</h3>
             
             <input type="hidden" id="pedido-id">
             
             <label for="producto">Nombre del producto:</label>
-            <input type="text" id="producto" placeholder="Ej: Hamburguesa, Perro, Soda">
+            <input type="text" id="producto" placeholder="Selecciona arriba o escribe...">
 
             <label for="precio">Precio unitario:</label>
             <input type="number" id="precio" placeholder="Ej: 20000">
 
-            <!-- BOTONES DE PRECIO RÁPIDO -->
             <div class="precios-rapidos">
                 <button type="button" class="btn-fast" onclick="fijarPrecio(6000)">$6k</button>
                 <button type="button" class="btn-fast" onclick="fijarPrecio(8000)">$8k</button>
@@ -43,7 +62,6 @@
             </button>
         </div>
 
-        <!-- CARRITO / CUENTA ACTUAL -->
         <div class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h3>🛒 Cuenta Actual</h3>
@@ -61,7 +79,13 @@
         </div>
     </div>
 
-    <!-- DASHBOARD INFERIOR -->
+    <div class="panel">
+        <h3>📜 Últimas Ventas (Historial)</h3>
+        <div id="historial-ventas" class="historial-lista">
+            <p style="color: #888; text-align: center;">Cargando historial...</p>
+        </div>
+    </div>
+
     <div class="dashboard-resumen">
         <div class="stat">
             Ventas del día: <span id="totalVentas">$0</span>
@@ -72,8 +96,7 @@
     </div>
 </div>
 
-<!-- Usamos un parámetro de versión para forzar la actualización en el móvil -->
-<script src="script.js?v=12"></script>
+<script src="script.js?v=13"></script>
 
 </body>
 </html>

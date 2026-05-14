@@ -1,18 +1,18 @@
 // --- CONFIG ---
 const API = "https://app-pedidos-qhpu.onrender.com"; 
 let pedidosGlobal = [];
+let historialVentas = []; // Para guardar las ventas finalizadas
 let cantidadActual = 1;
-let indiceSlider = 0;
 
 // --- INICIO ---
 document.addEventListener("DOMContentLoaded", () => {
     cargarPedidos();
     activarBuscador();
 
-    // Intervalo de actualización
+    // Intervalo de actualización (30 seg)
     setInterval(cargarPedidos, 30000);
 
-    // Evento para botón agregar manual
+    // Evento para botón agregar
     const btnAgregar = document.getElementById("btn-agregar");
     if (btnAgregar) {
         btnAgregar.addEventListener("click", agregar);
@@ -23,17 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnFinalizar) {
         btnFinalizar.addEventListener("click", finalizarPedido);
     }
-
-    // Delegación de eventos para botones del Slider (Optimizado para iOS/Android)
-    document.addEventListener("click", function(e) {
-        if (e.target && e.target.classList.contains("btn-add-slider")) {
-            const btn = e.target;
-            const producto = btn.dataset.producto;
-            const precio = Number(btn.dataset.precio);
-            agregarDesdeSlider(btn, producto, precio);
-        }
-    });
 });
+
+// --- FUNCIÓN PARA EL CATÁLOGO VISUAL ---
+// Se activa al tocar una imagen en el catálogo
+function seleccionarProducto(nombre, precio) {
+    document.getElementById("producto").value = nombre;
+    document.getElementById("precio").value = precio;
+    
+    // Efecto visual de selección rápida
+    const panel = document.getElementById("panel-manual");
+    panel.style.backgroundColor = "#e8f5e9";
+    setTimeout(() => panel.style.backgroundColor = "white", 300);
+}
 
 // --- API: OBTENER PEDIDOS ---
 async function cargarPedidos() {
@@ -49,7 +51,7 @@ async function cargarPedidos() {
     }
 }
 
-// --- AGREGAR MANUAL ---
+// --- AGREGAR PEDIDO ---
 async function agregar() {
     const productoInput = document.getElementById("producto");
     const precioInput = document.getElementById("precio");
@@ -58,7 +60,7 @@ async function agregar() {
     const precio = Number(precioInput.value);
 
     if (!producto || precio <= 0) {
-        alert("⚠️ Datos inválidos");
+        alert("⚠️ Selecciona un producto o ingresa datos válidos");
         return;
     }
 
@@ -80,7 +82,6 @@ async function agregar() {
         if (data.ok) {
             cancelarEdicion();
             await cargarPedidos();
-            alert("✅ Pedido agregado");
         } else {
             alert("❌ Error: " + (data.error || "No se pudo guardar"));
         }
@@ -89,62 +90,54 @@ async function agregar() {
     }
 }
 
-// --- AGREGAR DESDE SLIDER ---
-async function agregarDesdeSlider(btn, producto, precio) {
-    const slide = btn.closest(".slide");
-    const cantidadSpan = slide.querySelector(".cantidad");
-    const cantidad = parseInt(cantidadSpan.textContent);
-
-    try {
-        const res = await fetch(`${API}/pedido`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({ producto, cantidad, precio })
-        });
-
-        const data = await res.json();
-        if (data.ok) {
-            cantidadSpan.textContent = 1;
-            await cargarPedidos();
-            alert("✅ " + producto + " agregado");
-        }
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-// --- ELIMINAR PEDIDO ---
-async function eliminar(id) {
-    if (!confirm("¿Eliminar este producto?")) return;
-    try {
-        await fetch(`${API}/pedidos/${id}`, { 
-            method: "DELETE",
-            headers: { "Accept": "application/json" }
-        });
-        cargarPedidos();
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-// --- FINALIZAR VENTA (BORRAR TODO) ---
+// --- FINALIZAR VENTA Y GUARDAR EN HISTORIAL ---
 async function finalizarPedido() {
     if (pedidosGlobal.length === 0) return alert("Carrito vacío");
-    if (!confirm("¿Finalizar y vaciar pedido?")) return;
+    
+    const totalVenta = pedidosGlobal.reduce((acc, p) => acc + (p.cantidad * p.precio), 0);
+    
+    if (!confirm(`¿Finalizar venta por ${formatoCOP(totalVenta)}?`)) return;
+
+    // Guardamos en el historial antes de borrar
+    const nuevaVenta = {
+        fecha: new Date().toLocaleTimeString(),
+        items: [...pedidosGlobal],
+        total: totalVenta
+    };
+    historialVentas.unshift(nuevaVenta); // Agregamos al inicio de la lista
+    actualizarVistaHistorial();
 
     try {
-        // Borramos todos los items uno por uno o mediante un endpoint global si lo tienes
-        for (const p of pedidosGlobal) {
-            await fetch(`${API}/pedidos/${p.id}`, { method: "DELETE" });
-        }
-        cargarPedidos();
-        alert("✅ Venta finalizada");
+        // Usamos el endpoint para limpiar todo si existe, o borramos uno por uno
+        await fetch(`${API}/limpiar-pedidos`, { method: "DELETE" });
+        await cargarPedidos();
+        alert("✅ Venta registrada en el historial");
     } catch (err) {
-        console.error(err);
+        console.error("Error al finalizar:", err);
     }
+}
+
+// --- ACTUALIZAR VISTA DEL HISTORIAL ---
+function actualizarVistaHistorial() {
+    const contenedor = document.getElementById("historial-ventas");
+    if (!contenedor) return;
+
+    if (historialVentas.length === 0) {
+        contenedor.innerHTML = '<p style="color: #888; text-align: center;">No hay ventas recientes</p>';
+        return;
+    }
+
+    contenedor.innerHTML = historialVentas.slice(0, 5).map(venta => `
+        <div style="background: #fff; border-bottom: 1px solid #eee; padding: 10px; font-size: 0.9em;">
+            <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                <span>🕒 ${venta.fecha}</span>
+                <span style="color: #2e7d32;">${formatoCOP(venta.total)}</span>
+            </div>
+            <div style="color: #666;">
+                ${venta.items.map(i => `${i.cantidad}x ${i.producto}`).join(", ")}
+            </div>
+        </div>
+    `).join("");
 }
 
 // --- RENDERIZADO DE INTERFAZ ---
@@ -173,6 +166,16 @@ function renderPedidos(data) {
     totalTxt.textContent = `Total: ${formatoCOP(suma)}`;
 }
 
+// --- ELIMINAR ITEM INDIVIDUAL ---
+async function eliminar(id) {
+    try {
+        await fetch(`${API}/pedidos/${id}`, { method: "DELETE" });
+        cargarPedidos();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 // --- UTILIDADES ---
 function formatoCOP(v) {
     return "$" + Number(v).toLocaleString("es-CO");
@@ -183,19 +186,8 @@ function cambiarCantidad(v) {
     document.getElementById("cantidad").textContent = cantidadActual;
 }
 
-function cambiarCantidadSlider(btn, cambio) {
-    const span = btn.parentElement.querySelector(".cantidad");
-    let cantidad = parseInt(span.textContent);
-    cantidad = Math.max(1, cantidad + cambio);
-    span.textContent = cantidad;
-}
-
-function moverSlide(p) {
-    const slider = document.getElementById("slider");
-    const slides = document.querySelectorAll(".slide");
-    if (!slider || slides.length === 0) return;
-    indiceSlider = (indiceSlider + p + slides.length) % slides.length;
-    slider.style.transform = `translateX(${-indiceSlider * 100}%)`;
+function fijarPrecio(valor) {
+    document.getElementById("precio").value = valor;
 }
 
 function cancelarEdicion() {
@@ -234,13 +226,4 @@ function actualizarDashboard(data) {
     });
     const top = Object.keys(conteo).reduce((a, b) => conteo[a] > conteo[b] ? a : b);
     mv.textContent = top;
-}
-
-function fijarPrecio(valor) {
-    document.getElementById("precio").value = valor;
-}
-
-function toggleManual() {
-    const panel = document.getElementById("panel-manual");
-    panel.style.display = (panel.style.display === "block") ? "none" : "block";
 }
