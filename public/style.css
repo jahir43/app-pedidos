@@ -262,4 +262,27 @@ input {
     .container { 
         padding: 15px; 
     }
+
+    /* 🔥 CORRECCIÓN DE SCROLL CRÍTICA PARA IPHONE */
+    .catalogo-scroll-container {
+        width: 100%;
+        overflow-x: scroll !important; /* Fuerza la aparición del scroll */
+        display: block;
+        padding-bottom: 15px;
+        -webkit-overflow-scrolling: touch; /* Suavizado táctil obligatorio en iOS */
+    }
+
+    .catalogo-grid {
+        display: flex !important;
+        display: -webkit-box !important; /* Compatibilidad antigua de Safari */
+        flex-direction: row;
+        gap: 12px;
+        width: max-content !important; /* Obliga a estirarse a la derecha */
+    }
+
+    .producto-card {
+        min-width: 105px !important;
+        max-width: 105px !important;
+        flex-shrink: 0 !important;
+    }
 }
