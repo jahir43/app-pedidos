@@ -47,11 +47,23 @@ h1 {
     color: #333;
 }
 
-/* 🍱 DISEÑO DEL CATÁLOGO (NUEVO) */
+/* 🍱 DISEÑO DEL CATÁLOGO CON SCROLL HORIZONTAL (ESTILOS GLOBALES) */
+.catalogo-scroll-container {
+    width: 100%;
+    overflow-x: auto; /* Permite deslizar hacia los lados */
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch; /* Deslizamiento suave en iOS */
+}
+
+/* Oculta la barra de scroll para mantener la interfaz limpia */
+.catalogo-scroll-container::-webkit-scrollbar {
+    display: none; 
+}
+
 .catalogo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 15px;
+    display: flex !important; /* Alineación horizontal para el deslizamiento */
+    gap: 12px;
+    width: max-content; /* Obliga al contenedor a expandirse hacia la derecha */
     margin-top: 10px;
 }
 
@@ -64,6 +76,9 @@ h1 {
     cursor: pointer;
     transition: 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    min-width: 105px; /* Tamaño ideal y fijo para que no se deformen */
+    max-width: 105px;
+    flex-shrink: 0; /* Evita que el navegador colapse la tarjeta */
 }
 
 .producto-card:active {
@@ -73,7 +88,7 @@ h1 {
 
 .producto-card img {
     width: 100%;
-    height: 80px;
+    height: 75px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 5px;
@@ -216,10 +231,35 @@ input {
     background: #fafafa;
 }
 
-/* 📱 RESPONSIVE */
+/* 📊 DASHBOARD */
+.dashboard-resumen {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255,255,255,0.8);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.stat {
+    font-weight: bold;
+    color: #444;
+}
+
+.stat span {
+    color: var(--success);
+}
+
+/* 📱 RESPONSIVE (SOLO PARA CAMBIOS DE PANTALLA) */
 @media (max-width: 768px) {
-    .grid { grid-template-columns: 1fr; }
-    h1 { font-size: 1.3rem; }
-    .container { padding: 15px; }
-    .catalogo-grid { grid-template-columns: repeat(3, 1fr); } /* 3 columnas en móvil */
+    .grid { 
+        grid-template-columns: 1fr; 
+    }
+    h1 { 
+        font-size: 1.3rem; 
+    }
+    .container { 
+        padding: 15px; 
+    }
 }
