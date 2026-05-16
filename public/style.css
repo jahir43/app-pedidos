@@ -47,47 +47,37 @@ h1 {
     color: #333;
 }
 
-/* Bento/Scroll horizontal del catálogo corregido para contenerse en el cuadro blanco */
+/* 🍱 CONTENEDOR DEL CATÁLOGO (Bloque contenedor normal que respeta los límites blancos) */
 .catalogo-scroll-container {
     width: 100%;
-    max-width: 100%; /* 🔥 OBLIGA a quedarse dentro del recuadro blanco */
-    overflow-x: auto !important; /* Habilita el desplazamiento de lado a lado */
-    overflow-y: hidden;
-    display: block !important;
-    padding-bottom: 12px;
+    overflow: visible; /* Eliminamos el scroll horizontal que causaba problemas */
+    display: block;
     margin-top: 10px;
-    box-sizing: border-box;
-    -webkit-overflow-scrolling: touch; /* Scroll ultra suave en iPhone (Safari) */
 }
 
-/* Oculta la barra de scroll para mantener la interfaz premium y limpia */
-.catalogo-scroll-container::-webkit-scrollbar {
-    display: none; 
-    width: 0;
-    height: 0;
-}
-
+/* 👥 LA CUADRÍCULA (Grid responsivo: se adapta en PC y fuerza 2 columnas en el móvil) */
 .catalogo-grid {
-    display: flex !important; /* Fuerza la fila horizontal */
-    flex-direction: row !important;
-    flex-wrap: nowrap !important; /* 🔥 IMPIDE de forma estricta que los productos salten abajo */
-    gap: 12px;
-    width: max-content !important; /* Permite estirarse internamente sin límite */
-    padding: 4px;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)) !important; /* Computadora */
+    gap: 12px !important;
+    width: 100% !important;
+    padding: 2px;
 }
 
+/* 🗂️ LAS TARJETAS INDIVIDUALES */
 .producto-card {
     background: white;
     border: 1px solid #eee;
     border-radius: 12px;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
     cursor: pointer;
     transition: 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    min-width: 100px !important; /* Tamaño estándar perfecto para el celular */
-    max-width: 100px !important;
-    flex-shrink: 0 !important; /* 🔥 PROHIBE que el navegador aplaste el ancho de la tarjeta */
+    width: 100% !important; /* Ocupa el ancho completo de la columna asignada */
+    min-width: 0 !important; /* Elimina restricciones horizontales viejas */
+    max-width: 100% !important;
+    flex-shrink: 1 !important;
 }
 
 .producto-card:active {
@@ -97,16 +87,16 @@ h1 {
 
 .producto-card img {
     width: 100%;
-    height: 75px;
+    height: 85px; /* Un poco más altas para que luzcan mejor en cuadrícula */
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .producto-card p {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #444;
-    line-height: 1.2;
+    line-height: 1.3;
 }
 
 /* GRID PRINCIPAL */
@@ -272,11 +262,8 @@ input {
         padding: 15px; 
     }
     
-    /* Adaptaciones de scroll específicas para móviles */
-    .catalogo-scroll-container {
-        overflow-x: scroll !important;
-    }
+    /* 🔥 REGLA PARA MÓVIL: Obliga al catálogo a dividirse en 2 columnas perfectas */
     .catalogo-grid {
-        display: -webkit-box !important; /* Soporte extra para Safari móvil antiguo */
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 }
