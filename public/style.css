@@ -47,38 +47,47 @@ h1 {
     color: #333;
 }
 
-/* 🍱 DISEÑO DEL CATÁLOGO CON SCROLL HORIZONTAL (ESTILOS GLOBALES) */
+/* Bento/Scroll horizontal del catálogo corregido para contenerse en el cuadro blanco */
 .catalogo-scroll-container {
     width: 100%;
-    overflow-x: auto; /* Permite deslizar hacia los lados */
-    padding-bottom: 10px;
-    -webkit-overflow-scrolling: touch; /* Deslizamiento suave en iOS */
+    max-width: 100%; /* 🔥 OBLIGA a quedarse dentro del recuadro blanco */
+    overflow-x: auto !important; /* Habilita el desplazamiento de lado a lado */
+    overflow-y: hidden;
+    display: block !important;
+    padding-bottom: 12px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch; /* Scroll ultra suave en iPhone (Safari) */
 }
 
-/* Oculta la barra de scroll para mantener la interfaz limpia */
+/* Oculta la barra de scroll para mantener la interfaz premium y limpia */
 .catalogo-scroll-container::-webkit-scrollbar {
     display: none; 
+    width: 0;
+    height: 0;
 }
 
 .catalogo-grid {
-    display: flex !important; /* Alineación horizontal para el deslizamiento */
+    display: flex !important; /* Fuerza la fila horizontal */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* 🔥 IMPIDE de forma estricta que los productos salten abajo */
     gap: 12px;
-    width: max-content; /* Obliga al contenedor a expandirse hacia la derecha */
-    margin-top: 10px;
+    width: max-content !important; /* Permite estirarse internamente sin límite */
+    padding: 4px;
 }
 
 .producto-card {
     background: white;
-    border: 2px solid transparent;
+    border: 1px solid #eee;
     border-radius: 12px;
     padding: 10px;
     text-align: center;
     cursor: pointer;
     transition: 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    min-width: 105px; /* Tamaño ideal y fijo para que no se deformen */
-    max-width: 105px;
-    flex-shrink: 0; /* Evita que el navegador colapse la tarjeta */
+    min-width: 100px !important; /* Tamaño estándar perfecto para el celular */
+    max-width: 100px !important;
+    flex-shrink: 0 !important; /* 🔥 PROHIBE que el navegador aplaste el ancho de la tarjeta */
 }
 
 .producto-card:active {
@@ -251,7 +260,7 @@ input {
     color: var(--success);
 }
 
-/* 📱 RESPONSIVE (SOLO PARA CAMBIOS DE PANTALLA) */
+/* 📱 RESPONSIVE */
 @media (max-width: 768px) {
     .grid { 
         grid-template-columns: 1fr; 
@@ -262,27 +271,12 @@ input {
     .container { 
         padding: 15px; 
     }
-
-    /* 🔥 CORRECCIÓN DE SCROLL CRÍTICA PARA IPHONE */
+    
+    /* Adaptaciones de scroll específicas para móviles */
     .catalogo-scroll-container {
-        width: 100%;
-        overflow-x: scroll !important; /* Fuerza la aparición del scroll */
-        display: block;
-        padding-bottom: 15px;
-        -webkit-overflow-scrolling: touch; /* Suavizado táctil obligatorio en iOS */
+        overflow-x: scroll !important;
     }
-
     .catalogo-grid {
-        display: flex !important;
-        display: -webkit-box !important; /* Compatibilidad antigua de Safari */
-        flex-direction: row;
-        gap: 12px;
-        width: max-content !important; /* Obliga a estirarse a la derecha */
-    }
-
-    .producto-card {
-        min-width: 105px !important;
-        max-width: 105px !important;
-        flex-shrink: 0 !important;
+        display: -webkit-box !important; /* Soporte extra para Safari móvil antiguo */
     }
 }
